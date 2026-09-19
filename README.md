@@ -41,7 +41,7 @@ In a second terminal:
 npm run setup:auth
 
 # 3b. Create the one admin account (see "Creating the admin" below)
-npx convex run seed:createAdmin '{"email":"you@example.com","password":"a-long-passphrase"}'
+npm run admin:create
 
 # 3c. Optional: add realistic sample posts so the design has something to show
 npx convex run seed:sampleContent
@@ -60,14 +60,11 @@ Open <http://localhost:3000>. The dashboard is at <http://localhost:3000/admin> 
 There is no sign-up form. The owner account is created once, from your terminal, and Convex Auth's sign-up flow is switched off in `convex/auth.ts`, so nobody else can register.
 
 ```bash
-# macOS / Linux / Git Bash
-npx convex run seed:createAdmin '{"email":"you@example.com","password":"a-long-passphrase"}'
+npm run admin:create              # your dev deployment
+npm run admin:create -- --prod    # your production deployment
 ```
 
-```powershell
-# Windows PowerShell
-npx convex run seed:createAdmin "{\"email\":\"you@example.com\",\"password\":\"a-long-passphrase\"}"
-```
+It asks for the email and a password (typed hidden). Use this rather than typing the JSON yourself: on Windows, PowerShell and cmd mangle the quotes in `npx convex run seed:createAdmin '{...}'`, and a password containing a space breaks it (`too many arguments for 'run'`). The script hands the values to Convex without any shell parsing.
 
 Passwords must be at least 12 characters. The command refuses to run if an account already exists. To change the password later (this also signs out existing sessions):
 
@@ -101,9 +98,10 @@ For your production deployment, add `--prod` to any `npx convex run` command.
      | Name | Value |
      |---|---|
      | `CONVEX_DEPLOY_KEY` | the production deploy key from step 2 (mark it Sensitive) |
+     | `NEXT_PUBLIC_CONVEX_URL` | **required.** Your **production** deployment URL, e.g. `https://your-name-123.convex.cloud` (Convex dashboard, Production, Settings). Never the dev URL from `.env.local`. |
      | `NEXT_PUBLIC_SITE_URL` | optional; your public origin, e.g. `https://akuko.example.com` (no trailing slash). If empty, Vercel's production domain is used automatically. |
 
-     You do not need to set `NEXT_PUBLIC_CONVEX_URL` in Vercel. (If you ever set it by hand, it must be the **production** URL, never the dev one from `.env.local`.)
+     `NEXT_PUBLIC_CONVEX_URL` must be set in Vercel even though the Convex CLI also supplies it during the build: the running server reads it at request time, and without it `/admin/login` returns a 500 ("Missing environment variable `NEXT_PUBLIC_CONVEX_URL`") and public pages silently render as empty. Vercel warns about the `NEXT_PUBLIC_` prefix; the value is a public address, so the warning can be ignored (leave the type as the default).
 
 4. **Give the production deployment its auth keys, once.** From your machine:
 
@@ -116,7 +114,7 @@ For your production deployment, add `--prod` to any `npx convex run` command.
 5. **Create the production admin**, then deploy:
 
    ```bash
-   npx convex run --prod seed:createAdmin '{"email":"you@example.com","password":"a-long-passphrase"}'
+   npm run admin:create -- --prod
    ```
 
 Every later `git push` redeploys both the backend and the site.
