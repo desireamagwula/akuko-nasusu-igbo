@@ -95,15 +95,14 @@ For your production deployment, add `--prod` to any `npx convex run` command.
 
 3. **Import the repo in Vercel.** It detects Next.js on its own. Before the first deploy, set:
 
-   - **Build Command** (override): `npx convex deploy --cmd 'npm run build'`
-     This deploys `convex/` to your production Convex deployment first, then builds Next.js with `NEXT_PUBLIC_CONVEX_URL` pointing at it.
-   - **Environment variables**:
+   - **Build Command** (override): `npx convex deploy && npm run build`
+     This pushes `convex/` to your production Convex deployment **first**, then builds Next.js. The order matters: the public pages read from Convex while they are being built, so the functions must already exist there. (Do not use `npx convex deploy --cmd 'npm run build'` for this app: that form runs the build *before* pushing the functions, and the first build fails with a "Server Error" from `posts:listPublished`.)
+   - **Environment variables** (scope them to **Production** only, so preview builds never touch your live backend):
      | Name | Value |
      |---|---|
      | `CONVEX_DEPLOY_KEY` | the production deploy key from step 2 |
-     | `NEXT_PUBLIC_SITE_URL` | your public origin, e.g. `https://akuko.example.com` (no trailing slash) |
-
-   `NEXT_PUBLIC_CONVEX_URL` is supplied to the build by `npx convex deploy`, so you do not need to add it. (Alternatively, use the Convex integration from the Vercel marketplace, which sets these for you.)
+     | `NEXT_PUBLIC_CONVEX_URL` | your **production** deployment URL, e.g. `https://your-name-123.convex.cloud` (Convex dashboard, Production, Settings). Never the dev URL from `.env.local`. |
+     | `NEXT_PUBLIC_SITE_URL` | optional; your public origin, e.g. `https://akuko.example.com` (no trailing slash). If empty, Vercel's production domain is used automatically. |
 
 4. **Give the production deployment its auth keys, once.** From your machine:
 
