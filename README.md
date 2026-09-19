@@ -60,19 +60,20 @@ Open <http://localhost:3000>. The dashboard is at <http://localhost:3000/admin> 
 There is no sign-up form. The owner account is created once, from your terminal, and Convex Auth's sign-up flow is switched off in `convex/auth.ts`, so nobody else can register.
 
 ```bash
-npm run admin:create              # your dev deployment
-npm run admin:create -- --prod    # your production deployment
+npm run admin:create         # your dev deployment
+npm run admin:create:prod    # your PRODUCTION deployment
 ```
 
-It asks for the email and a password (typed hidden). Use this rather than typing the JSON yourself: on Windows, PowerShell and cmd mangle the quotes in `npx convex run seed:createAdmin '{...}'`, and a password containing a space breaks it (`too many arguments for 'run'`). The script hands the values to Convex without any shell parsing.
+It asks for the email and a password (typed hidden). Read the first line it prints: it says `development` or `PRODUCTION`, so you can see which deployment it is about to change. Use this rather than typing the JSON yourself: on Windows, PowerShell and cmd mangle the quotes in `npx convex run seed:createAdmin '{...}'`, and a password containing a space breaks it (`too many arguments for 'run'`). The script hands the values to Convex without any shell parsing.
 
-Passwords must be at least 12 characters. The command refuses to run if an account already exists. To change the password later (this also signs out existing sessions):
+Passwords must be at least 12 characters. The command refuses to run if an account already exists. To set a new password for the existing admin (this also signs out existing sessions):
 
 ```bash
-npx convex run seed:setAdminPassword '{"email":"you@example.com","password":"a-new-long-passphrase"}'
+npm run admin:reset          # your dev deployment
+npm run admin:reset:prod     # your PRODUCTION deployment
 ```
 
-For your production deployment, add `--prod` to any `npx convex run` command.
+Production has its own script names on purpose. Do not use `npm run x -- --prod`: in Windows PowerShell 5.1 the `--` separator is lost, npm swallows `--prod` as its own `--production` option, and the script quietly runs against your dev deployment.
 
 ### Sample content
 
@@ -106,15 +107,15 @@ For your production deployment, add `--prod` to any `npx convex run` command.
 4. **Give the production deployment its auth keys, once.** From your machine:
 
    ```bash
-   npm run setup:auth -- --prod --site-url https://akuko.example.com
+   npm run setup:auth:prod https://akuko.example.com
    ```
 
-   If that asks you to log in, run `npx convex login` first, or set `CONVEX_DEPLOY_KEY` in your shell for the command.
+   It prints `Target: PRODUCTION deployment` first, then sets `JWT_PRIVATE_KEY`, `JWKS` and `SITE_URL`. Until this is done, sign-in cannot work on the live site (`https://<your-deployment>.convex.site/.well-known/jwks.json` returns a 500). If it asks you to log in, run `npx convex login` first, or set `CONVEX_DEPLOY_KEY` in your shell for the command.
 
-5. **Create the production admin**, then deploy:
+5. **Create the production admin**:
 
    ```bash
-   npm run admin:create -- --prod
+   npm run admin:create:prod
    ```
 
 Every later `git push` redeploys both the backend and the site.
@@ -170,7 +171,7 @@ Public pages are statically generated and refreshed in the background at most ev
 - Seed commands are `internal` Convex functions: they cannot be called from a browser.
 - Article HTML and embed URLs are validated on save and sanitised on render.
 - Thumbnails are checked to be images under 10 MB before they are attached to a post.
-- No secrets are committed. Rotate the signing keys with `npm run setup:auth -- --force` (this signs the admin out).
+- No secrets are committed. Rotate the signing keys by adding the word `force`, e.g. `npm run setup:auth:prod https://your-domain.com force` (this signs the admin out).
 
 ## Known limits
 

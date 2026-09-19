@@ -9,7 +9,11 @@
     "start": "next start",
     "typecheck": "tsc --noEmit && tsc --noEmit -p convex",
     "setup:auth": "node scripts/setup-auth.mjs",
-    "admin:create": "node scripts/create-admin.mjs"
+    "admin:create": "node scripts/create-admin.mjs",
+    "admin:reset": "node scripts/create-admin.mjs --reset",
+    "setup:auth:prod": "node scripts/setup-auth.mjs --prod",
+    "admin:create:prod": "node scripts/create-admin.mjs --prod",
+    "admin:reset:prod": "node scripts/create-admin.mjs --reset --prod"
   },
   "engines": {
     "node": ">=20.9"
