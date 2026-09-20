@@ -1,30 +1,37 @@
+import Image from "next/image";
+
+// Intrinsic size of public/brand/logo.png (the cropped, transparent-background logo).
+const LOGO_WIDTH = 156;
+const LOGO_HEIGHT = 176;
+
 /**
- * The mark: a solid oxblood square holding the dotted "ụ" from the name.
- * A square, because nothing on this site is round.
+ * The site logo. `size` is the displayed height in pixels; the width follows
+ * the artwork's proportions. It sits next to the wordmark, which already says
+ * the name in text, so the image itself is decorative.
  */
-export function LogoMark({ size = 28, className = "" }: { size?: number; className?: string }) {
+export function LogoMark({
+  size = 38,
+  className = "",
+  priority = false,
+}: {
+  size?: number;
+  className?: string;
+  priority?: boolean;
+}) {
+  const width = Math.round((size * LOGO_WIDTH) / LOGO_HEIGHT);
   return (
-    <svg
-      width={size}
+    <Image
+      src="/brand/logo.png"
+      alt=""
+      width={width}
       height={size}
-      viewBox="0 0 32 32"
+      priority={priority}
+      // Already a small, pre-sized file: serve it as-is so it stays sharp on retina screens.
+      unoptimized
       aria-hidden="true"
-      focusable="false"
-      className={`shrink-0 ${className}`}
-    >
-      <rect width="32" height="32" fill="#A4161A" />
-      {/* the letter u, built from strokes so it renders without any font */}
-      <path
-        d="M9.5 8.5v9.2c0 3 2.2 5 5.2 5h2.6c3 0 5.2-2 5.2-5V8.5"
-        fill="none"
-        stroke="#F6F2EA"
-        strokeWidth="2.6"
-        strokeLinecap="butt"
-      />
-      <path d="M22.5 8.5v13.8" fill="none" stroke="#F6F2EA" strokeWidth="2.6" />
-      {/* the dot beneath, which is what makes it Igbo */}
-      <rect x="14.2" y="26" width="3.6" height="3.6" fill="#F6F2EA" />
-    </svg>
+      className={`shrink-0 select-none ${className}`}
+      draggable={false}
+    />
   );
 }
 

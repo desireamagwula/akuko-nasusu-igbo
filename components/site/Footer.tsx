@@ -10,7 +10,7 @@ export function Footer({ siteName, facebookUrl }: { siteName: string; facebookUr
         <div className="grid gap-10 md:grid-cols-12">
           <div className="md:col-span-6">
             <div className="flex items-center gap-3">
-              <LogoMark size={26} />
+              <LogoMark size={36} />
               <Wordmark name={siteName} className="text-[1.375rem] leading-none" />
             </div>
             <p className="mt-5 max-w-sm text-[0.9375rem] leading-relaxed text-paper/70">

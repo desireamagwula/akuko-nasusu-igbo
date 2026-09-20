@@ -28,7 +28,7 @@ export function Masthead({ siteName }: { siteName: string }) {
     <header className="on-dark fixed inset-x-0 top-0 z-50 border-b border-paper/10 bg-ink text-paper">
       <div className="mx-auto flex h-14 max-w-[1240px] items-center justify-between px-5 md:h-[68px] md:px-8">
         <Link href="/" className="flex min-w-0 items-center gap-3" aria-label={`${siteName}, home`}>
-          <LogoMark size={28} />
+          <LogoMark size={38} priority />
           <Wordmark name={siteName} className="truncate text-[1.1875rem] leading-none md:text-[1.5rem]" />
         </Link>
 

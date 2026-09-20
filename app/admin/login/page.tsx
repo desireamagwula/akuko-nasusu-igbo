@@ -41,7 +41,7 @@ export default function LoginPage() {
     <main className="on-dark grid min-h-dvh place-items-center bg-ink px-5 py-16 text-paper">
       <div className="w-full max-w-[380px]">
         <div className="flex items-center gap-3">
-          <LogoMark size={30} />
+          <LogoMark size={40} />
           <span className="font-display text-[1.375rem] font-semibold tracking-[-0.01em]">Newsroom</span>
         </div>
         <h1 className="mt-10 font-display text-[2rem] font-semibold leading-tight tracking-[-0.02em]">Sign in</h1>

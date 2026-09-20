@@ -34,7 +34,7 @@ export function Thumb({
         />
       ) : (
         <div className="absolute inset-0 flex flex-col justify-between p-4 text-ink md:p-5" aria-hidden="true">
-          <LogoMark size={18} />
+          <LogoMark size={26} />
           <span className="font-display text-[1.375rem] italic leading-tight md:text-[1.75rem]">{post.category}</span>
         </div>
       )}

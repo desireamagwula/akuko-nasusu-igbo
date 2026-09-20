@@ -9,10 +9,12 @@ export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 export default async function Image() {
-  const [semibold, regular] = await Promise.all([
+  const [semibold, regular, logo] = await Promise.all([
     readFile(join(process.cwd(), "assets/fonts/Geist-SemiBold.ttf")),
     readFile(join(process.cwd(), "assets/fonts/Geist-Regular.ttf")),
+    readFile(join(process.cwd(), "public/brand/logo.png")),
   ]);
+  const logoSrc = `data:image/png;base64,${logo.toString("base64")}`;
   return new ImageResponse(
     (
       <div
@@ -28,7 +30,8 @@ export default async function Image() {
           fontFamily: "Geist",
         }}
       >
-        <div style={{ width: 72, height: 72, background: "#A4161A", display: "flex" }} />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={logoSrc} width={124} height={140} alt="" style={{ display: "flex" }} />
         <div style={{ display: "flex", flexDirection: "column" }}>
           <div style={{ fontSize: 96, lineHeight: 1.02, letterSpacing: -2, fontWeight: 600 }}>{DEFAULT_SITE_NAME}</div>
           <div style={{ marginTop: 28, fontSize: 32, color: "#B9AFA3", fontWeight: 400 }}>

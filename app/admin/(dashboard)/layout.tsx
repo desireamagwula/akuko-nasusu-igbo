@@ -41,7 +41,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     <div className="min-h-dvh bg-paper lg:grid lg:grid-cols-[248px_1fr]">
       <aside className="on-dark bg-ink text-paper lg:sticky lg:top-0 lg:flex lg:h-dvh lg:flex-col">
         <div className="flex items-center gap-3 px-5 pt-4 lg:px-6 lg:pt-7">
-          <LogoMark size={26} />
+          <LogoMark size={34} />
           <div className="min-w-0">
             <p className="font-display text-[1.125rem] font-semibold leading-none tracking-[-0.01em]">Newsroom</p>
             <p className="mt-1 truncate text-[0.75rem] text-paper/50">{settings?.siteName ?? " "}</p>
